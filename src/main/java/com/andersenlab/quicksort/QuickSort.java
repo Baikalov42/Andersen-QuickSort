@@ -2,40 +2,55 @@ package com.andersenlab.quicksort;
 
 public class QuickSort {
 
-    public static void sort(int[] array) {
-        int start = 0;
-        int end = array.length - 1;
-        quickSort(array, start, end);
+    private QuickSort() {
     }
 
-    private static void quickSort(int[] arr, int start, int end) {
+    public static void sort(int[] array) {
+        int from = 0;
+        int to = array.length - 1;
 
-        if (start < end) {
-            int index = partition(arr, start, end);
+        quickSort(array, from, to);
+    }
 
-            quickSort(arr, start, index - 1);
-            quickSort(arr, index + 1, end);
+    private static void quickSort(int[] arr, int from, int to) {
+        if (from < to) {
+
+            int divideIndex = partition(arr, from, to);
+
+            quickSort(arr, from, divideIndex - 1);
+            quickSort(arr, divideIndex, to);
         }
     }
 
-    private static int partition(int[] arr, int start, int end) {
-        int pivot = arr[end];
-        int i = (start - 1);
+    private static int partition(int[] arr, int from, int to) {
 
-        for (int k = start; k < end; k++) {
-            if (arr[k] <= pivot) {
-                i++;
+        int rightIndex = to;
+        int leftIndex = from;
 
-                int temp = arr[i];
-                arr[i] = arr[k];
-                arr[k] = temp;
+        int pivot = arr[from + (to - from) / 2];
+
+        while (leftIndex <= rightIndex) {
+
+            while (arr[leftIndex] < pivot) {
+                leftIndex++;
+            }
+
+            while (arr[rightIndex] > pivot) {
+                rightIndex--;
+            }
+
+            if (leftIndex <= rightIndex) {
+                swap(arr, rightIndex, leftIndex);
+                leftIndex++;
+                rightIndex--;
             }
         }
+        return leftIndex;
+    }
 
-        int temp = arr[i + 1];
-        arr[i + 1] = arr[end];
-        arr[end] = temp;
-
-        return i + 1;
+    private static void swap(int[] array, int first, int second) {
+        int temp = array[first];
+        array[first] = array[second];
+        array[second] = temp;
     }
 }
